@@ -1,0 +1,86 @@
+<header class="navbar-wrapper">
+  <div class="container navbar-inner">
+    <!-- Brand / Logo -->
+    <a routerLink="/" class="brand-logo" (click)="closeMobileMenu()">
+      <div class="logo-icon-wrap">
+        <span class="logo-emoji">🍳</span>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title">Recipe Explorer</span>
+        <span class="brand-tagline">Discover • Cook • Enjoy</span>
+      </div>
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="nav-links desktop-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-item">
+        <span class="nav-icon">🏠</span> Home
+      </a>
+      <a routerLink="/recipes" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🍽️</span> Explore Recipes
+      </a>
+      <a routerLink="/categories" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">🏷️</span> Categories
+      </a>
+      <a routerLink="/favorites" routerLinkActive="active" class="nav-item favorites-link">
+        <span class="nav-icon">❤️</span> Favorites
+        @if (favoritesCount > 0) {
+          <span class="fav-badge">{{ favoritesCount }}</span>
+        }
+      </a>
+      <a routerLink="/about" routerLinkActive="active" class="nav-item">
+        <span class="nav-icon">ℹ️</span> About
+      </a>
+    </nav>
+
+    <!-- Header Action Button -->
+    <div class="header-action desktop-action">
+      <a routerLink="/recipes" class="btn btn-primary btn-sm">
+        <span>Find Dish</span> ➔
+      </a>
+    </div>
+
+    <!-- Mobile Hamburger Toggle -->
+    <button
+      class="mobile-toggle"
+      (click)="toggleMobileMenu()"
+      aria-label="Toggle Navigation Menu"
+      [class.open]="isMobileMenuOpen"
+    >
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+      <span class="hamburger-bar"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  @if (isMobileMenuOpen) {
+    <div class="mobile-drawer animate-fade-in">
+      <nav class="mobile-nav-links">
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()" class="mobile-nav-item">
+          <span class="nav-icon">🏠</span> Home
+        </a>
+        <a routerLink="/recipes" routerLinkActive="active" (click)="closeMobileMenu()" class="mobile-nav-item">
+          <span class="nav-icon">🍽️</span> Explore Recipes
+        </a>
+        <a routerLink="/categories" routerLinkActive="active" (click)="closeMobileMenu()" class="mobile-nav-item">
+          <span class="nav-icon">🏷️</span> Categories
+        </a>
+        <a routerLink="/favorites" routerLinkActive="active" (click)="closeMobileMenu()" class="mobile-nav-item">
+          <span class="nav-icon">❤️</span> Favorites
+          @if (favoritesCount > 0) {
+            <span class="fav-badge">{{ favoritesCount }}</span>
+          }
+        </a>
+        <a routerLink="/about" routerLinkActive="active" (click)="closeMobileMenu()" class="mobile-nav-item">
+          <span class="nav-icon">ℹ️</span> About
+        </a>
+        <div class="mobile-cta-wrap">
+          <a routerLink="/recipes" (click)="closeMobileMenu()" class="btn btn-primary" style="width: 100%;">
+            Explore All 30 Recipes
+          </a>
+        </div>
+      </nav>
+    </div>
+  }
+</header>

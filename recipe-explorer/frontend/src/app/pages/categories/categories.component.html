@@ -1,0 +1,37 @@
+<div class="categories-page container animate-fade-in">
+  <div class="categories-header">
+    <span class="section-tag">Taste Taxonomy</span>
+    <h1 class="page-title">Recipe Categories</h1>
+    <p class="page-subtitle">
+      Browse our 12 handcrafted culinary classifications, from regional cuisines to meal types, fast weeknight dinners, and wholesome green meals.
+    </p>
+  </div>
+
+  @if (isLoading) {
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <p>Loading category collections...</p>
+    </div>
+  } @else {
+    <div class="category-cards-grid">
+      @for (cat of categories; track cat.id) {
+        <div class="category-box" (click)="navigateToCategory(cat)">
+          <div class="category-media">
+            <img [src]="cat.image" [alt]="cat.name" class="category-cover-img" loading="lazy" />
+            <div class="category-cover-overlay"></div>
+            <span class="category-floating-badge">{{ cat.recipeCount }} Recipes</span>
+            <div class="category-icon-disc">{{ cat.icon }}</div>
+          </div>
+          <div class="category-body">
+            <h3 class="category-card-title">{{ cat.name }}</h3>
+            <p class="category-card-desc">{{ cat.description }}</p>
+            <div class="category-card-footer">
+              <span class="explore-text">Explore {{ cat.name }}</span>
+              <span class="explore-arrow">➔</span>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

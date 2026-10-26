@@ -1,0 +1,46 @@
+<div class="search-bar-wrap">
+  <form (ngSubmit)="onSearch()" class="search-form" role="search">
+    <div class="input-container">
+      <span class="search-icon">🔍</span>
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        name="searchQuery"
+        [placeholder]="placeholder"
+        class="search-input"
+        autocomplete="off"
+      />
+      @if (searchQuery) {
+        <button
+          type="button"
+          (click)="clearSearch()"
+          class="clear-btn"
+          title="Clear search"
+          aria-label="Clear search"
+        >
+          ✕
+        </button>
+      }
+    </div>
+    <button type="submit" class="btn btn-primary btn-search">
+      <span>Search</span>
+    </button>
+  </form>
+
+  @if (showQuickTags) {
+    <div class="quick-tags-wrap">
+      <span class="quick-tag-label">Popular:</span>
+      <div class="quick-tag-pills">
+        @for (tag of quickTags; track tag) {
+          <button
+            type="button"
+            class="tag-pill-btn"
+            (click)="selectQuickTag(tag)"
+          >
+            {{ tag }}
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,211 @@
+.recipe-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform var(--transition-smooth), box-shadow var(--transition-smooth), border-color var(--transition-smooth);
+}
+
+.recipe-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-hover);
+  border-color: rgba(232, 89, 12, 0.25);
+}
+
+/* Card Media */
+.card-media-wrapper {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  background-color: var(--color-surface-soft);
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.recipe-card:hover .card-img {
+  transform: scale(1.08);
+}
+
+.card-overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.1) 100%);
+  pointer-events: none;
+}
+
+.card-top-badges {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  gap: 6px;
+  z-index: 2;
+}
+
+.fav-toggle-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+  transition: transform var(--transition-fast), background var(--transition-fast);
+  z-index: 2;
+}
+
+.fav-toggle-btn:hover {
+  transform: scale(1.15);
+  background: #FFFFFF;
+}
+
+.fav-toggle-btn:active {
+  transform: scale(0.9);
+}
+
+.heart-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+/* Card Body */
+.card-body {
+  padding: 20px 20px 14px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.card-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.rating-val {
+  color: var(--color-text-main);
+  font-weight: 700;
+}
+
+.reviews-count {
+  color: var(--color-text-light);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.card-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.card-title a {
+  transition: color var(--transition-fast);
+}
+
+.card-title a:hover {
+  color: var(--color-primary);
+}
+
+.card-desc {
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Time Bar */
+.card-times-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: var(--color-surface-soft);
+  border-radius: var(--radius-sm);
+  margin-top: auto;
+}
+
+.time-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.time-icon {
+  font-size: 0.95rem;
+}
+
+.time-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.time-label {
+  font-size: 0.68rem;
+  color: var(--color-text-light);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.time-val {
+  font-size: 0.84rem;
+  color: var(--color-text-main);
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.time-divider {
+  width: 1px;
+  height: 22px;
+  background-color: var(--color-border);
+}
+
+/* Card Footer */
+.card-footer {
+  padding: 0 20px 20px;
+}
+
+.btn-view-recipe {
+  width: 100%;
+  font-size: 0.92rem;
+  padding: 10px 18px;
+}
+
+.arrow-icon {
+  transition: transform var(--transition-fast);
+}
+
+.btn-view-recipe:hover .arrow-icon {
+  transform: translateX(4px);
+}

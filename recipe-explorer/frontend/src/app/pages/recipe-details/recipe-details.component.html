@@ -1,0 +1,318 @@
+<div class="recipe-details-page container">
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <p>Preparing culinary details...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (!isLoading && (hasError || !recipe)) {
+    <div class="error-banner animate-fade-in">
+      <span class="error-icon">⚠️</span>
+      <h2>Oops! Recipe Not Found</h2>
+      <p>{{ errorMessage || 'The recipe you requested could not be retrieved.' }}</p>
+      <a routerLink="/recipes" class="btn btn-primary">
+        Back to Explore Recipes ➔
+      </a>
+    </div>
+  }
+
+  <!-- Recipe Details Content -->
+  @if (!isLoading && recipe) {
+    <div class="recipe-sheet animate-fade-in">
+      <!-- Breadcrumbs & Navigation -->
+      <nav class="recipe-breadcrumbs no-print" aria-label="Breadcrumb">
+        <a routerLink="/">Home</a>
+        <span class="crumb-separator">/</span>
+        <a routerLink="/recipes">Recipes</a>
+        <span class="crumb-separator">/</span>
+        <a [routerLink]="['/recipes']" [queryParams]="{ cuisine: recipe.cuisine }">{{ recipe.cuisine }}</a>
+        <span class="crumb-separator">/</span>
+        <span class="crumb-current">{{ recipe.name }}</span>
+      </nav>
+
+      <!-- Recipe Hero Card -->
+      <div class="recipe-hero-card">
+        <!-- Media Column -->
+        <div class="hero-image-wrap">
+          <img [src]="recipe.imageUrl" [alt]="recipe.name" class="recipe-large-img" />
+          <div class="hero-image-overlay"></div>
+          
+          <div class="hero-floating-badges">
+            <span class="badge badge-orange">{{ recipe.cuisine }}</span>
+            <span class="badge badge-green">{{ recipe.dietary }}</span>
+            <span class="badge" [ngClass]="getDifficultyClass(recipe.difficulty)">{{ recipe.difficulty }}</span>
+          </div>
+
+          <!-- Floating Favorite Button -->
+          <button
+            type="button"
+            class="hero-fav-btn no-print"
+            [class.active]="isFavorite"
+            (click)="toggleFavorite()"
+            [attr.aria-label]="isFavorite ? 'Remove from favorites' : 'Save to favorites'"
+          >
+            <span class="fav-icon">{{ isFavorite ? '❤️' : '🤍' }}</span>
+            <span class="fav-text">{{ isFavorite ? 'Saved' : 'Save' }}</span>
+          </button>
+        </div>
+
+        <!-- Meta & Title Column -->
+        <div class="hero-info-wrap">
+          <div class="rating-category-row">
+            <span class="category-pill">{{ recipe.category }} • {{ recipe.mealType }}</span>
+            <div class="star-rating">
+              <span class="star-icon">⭐</span>
+              <strong>{{ recipe.rating }}</strong>
+              <span class="reviews-count">({{ recipe.reviewCount }} reviews)</span>
+            </div>
+          </div>
+
+          <h1 class="recipe-name">{{ recipe.name }}</h1>
+          <p class="recipe-description">{{ recipe.description }}</p>
+
+          <!-- Quick Stats Ribbon -->
+          <div class="stats-box-grid">
+            <div class="stat-box">
+              <span class="stat-box-icon">⏱️</span>
+              <span class="stat-box-val">{{ recipe.prepTime }} mins</span>
+              <span class="stat-box-lbl">Prep Time</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-box-icon">🍳</span>
+              <span class="stat-box-val">{{ recipe.cookTime }} mins</span>
+              <span class="stat-box-lbl">Cook Time</span>
+            </div>
+            <div class="stat-box stat-box-highlight">
+              <span class="stat-box-icon">⌛</span>
+              <span class="stat-box-val">{{ recipe.totalTime }} mins</span>
+              <span class="stat-box-lbl">Total Time</span>
+            </div>
+            <div class="stat-box">
+              <span class="stat-box-icon">👥</span>
+              <span class="stat-box-val">{{ recipe.servings }} people</span>
+              <span class="stat-box-lbl">Original Servings</span>
+            </div>
+            @if (recipe.nutrition) {
+              <div class="stat-box">
+                <span class="stat-box-icon">🔥</span>
+                <span class="stat-box-val">{{ recipe.nutrition.calories }} kcal</span>
+                <span class="stat-box-lbl">Calories</span>
+              </div>
+            }
+          </div>
+
+          <!-- Recipe Tags -->
+          @if (recipe.tags && recipe.tags.length > 0) {
+            <div class="tags-cluster">
+              @for (tag of recipe.tags; track tag) {
+                <span class="recipe-tag">#{{ tag }}</span>
+              }
+            </div>
+          }
+
+          <!-- Action Buttons Toolbar -->
+          <div class="hero-actions-toolbar no-print">
+            <button
+              type="button"
+              class="btn"
+              [ngClass]="isFavorite ? 'btn-primary' : 'btn-outline-primary'"
+              (click)="toggleFavorite()"
+            >
+              <span>{{ isFavorite ? '❤️ In Favorites' : '🤍 Add to Favorites' }}</span>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="printRecipe()" title="Print Recipe">
+              <span>🖨️ Print Recipe</span>
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="shareRecipe()" title="Share Recipe">
+              <span>🔗 Share</span>
+            </button>
+          </div>
+
+          @if (shareToastMessage) {
+            <div class="toast-feedback animate-fade-in no-print">
+              <span>{{ shareToastMessage }}</span>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Main Content Layout: Ingredients + Instructions -->
+      <div class="recipe-content-grid">
+        <!-- Left Column: Scalable Ingredients & Nutrition -->
+        <aside class="sidebar-column">
+          <!-- Serving Size Scaler -->
+          <div class="interactive-scaler-card">
+            <div class="scaler-header">
+              <h3 class="scaler-title">Serving Size Scaler</h3>
+              @if (currentServings !== originalServings) {
+                <button type="button" class="btn-reset-servings no-print" (click)="resetServings()">
+                  Reset ({{ originalServings }})
+                </button>
+              }
+            </div>
+            <p class="scaler-desc">
+              Adjust servings to automatically recalculate proportional quantities for your gathering.
+            </p>
+            <div class="scaler-stepper no-print">
+              <button
+                type="button"
+                class="stepper-btn"
+                (click)="decreaseServings()"
+                [disabled]="currentServings <= 1"
+                aria-label="Decrease servings"
+              >
+                −
+              </button>
+              <div class="stepper-display">
+                <span class="stepper-count">{{ currentServings }}</span>
+                <span class="stepper-label">Servings</span>
+              </div>
+              <button
+                type="button"
+                class="stepper-btn"
+                (click)="increaseServings()"
+                [disabled]="currentServings >= 24"
+                aria-label="Increase servings"
+              >
+                +
+              </button>
+            </div>
+            @if (currentServings !== originalServings) {
+              <div class="scaler-notice">
+                <span>⚡ Scaled from {{ originalServings }} to {{ currentServings }} servings ({{ (currentServings / originalServings).toFixed(1) }}x)</span>
+              </div>
+            }
+          </div>
+
+          <!-- Ingredients List -->
+          <div class="ingredients-card">
+            <div class="card-section-heading">
+              <span class="heading-icon">🥗</span>
+              <h2>Ingredients</h2>
+              <span class="ingredients-count">({{ recipe.ingredients.length }} items)</span>
+            </div>
+            <ul class="ingredients-list">
+              @for (ing of recipe.ingredients; track ing.name) {
+                <li class="ingredient-row">
+                  <div class="ingredient-quantity-pill">
+                    <span class="qty-num">{{ getScaledQuantity(ing.quantity) }}</span>
+                    <span class="qty-unit">{{ ing.unit }}</span>
+                  </div>
+                  <div class="ingredient-details">
+                    <span class="ingredient-name">{{ ing.name }}</span>
+                    @if (ing.notes) {
+                      <span class="ingredient-note">({{ ing.notes }})</span>
+                    }
+                  </div>
+                </li>
+              }
+            </ul>
+          </div>
+
+          <!-- Nutrition Facts Card -->
+          @if (recipe.nutrition) {
+            <div class="nutrition-card">
+              <div class="card-section-heading">
+                <span class="heading-icon">📊</span>
+                <h3>Estimated Nutrition</h3>
+              </div>
+              <p class="nutrition-sub">Values per single serving portion.</p>
+
+              <div class="nutrition-grid">
+                <div class="nutrition-item">
+                  <span class="nutri-label">Calories</span>
+                  <span class="nutri-val">{{ recipe.nutrition.calories }} kcal</span>
+                </div>
+                <div class="nutrition-item">
+                  <span class="nutri-label">Protein</span>
+                  <span class="nutri-val">{{ recipe.nutrition.protein }}</span>
+                </div>
+                <div class="nutrition-item">
+                  <span class="nutri-label">Carbs</span>
+                  <span class="nutri-val">{{ recipe.nutrition.carbs }}</span>
+                </div>
+                <div class="nutrition-item">
+                  <span class="nutri-label">Fat</span>
+                  <span class="nutri-val">{{ recipe.nutrition.fat }}</span>
+                </div>
+                <div class="nutrition-item">
+                  <span class="nutri-label">Fiber</span>
+                  <span class="nutri-val">{{ recipe.nutrition.fiber }}</span>
+                </div>
+              </div>
+            </div>
+          }
+        </aside>
+
+        <!-- Right Column: Step-by-Step Cooking Instructions -->
+        <main class="instructions-column">
+          <div class="instructions-card">
+            <div class="instructions-header">
+              <div class="card-section-heading">
+                <span class="heading-icon">👨‍🍳</span>
+                <h2>Step-by-Step Instructions</h2>
+              </div>
+
+              <!-- Interactive Progress Tracker -->
+              <div class="progress-tracker-wrap no-print">
+                <div class="progress-meta">
+                  <span class="progress-lbl">Cooking Progress</span>
+                  <span class="progress-percent">{{ cookingProgress }}% Completed</span>
+                </div>
+                <div class="progress-bar-track">
+                  <div class="progress-bar-fill" [style.width.%]="cookingProgress"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Steps List -->
+            <ol class="instructions-steps-list">
+              @for (step of recipe.instructions; track $index) {
+                <li
+                  class="step-item"
+                  [class.completed]="isStepCompleted($index)"
+                  (click)="toggleStep($index)"
+                >
+                  <div class="step-checkbox-wrap no-print">
+                    <input
+                      type="checkbox"
+                      [checked]="isStepCompleted($index)"
+                      (change)="toggleStep($index)"
+                      [id]="'step-' + $index"
+                      class="step-checkbox"
+                    />
+                  </div>
+                  <div class="step-number-pill">
+                    Step {{ $index + 1 }}
+                  </div>
+                  <div class="step-content">
+                    <p class="step-text">{{ step }}</p>
+                  </div>
+                </li>
+              }
+            </ol>
+
+            <!-- Cooking Finished Celebration Card -->
+            @if (cookingProgress === 100) {
+              <div class="cooking-finished-card animate-fade-in no-print">
+                <span class="finished-emoji">🎉</span>
+                <h3>Bon Appétit! Dish Completed!</h3>
+                <p>All steps are completed. Plate your {{ recipe.name }}, snap a photo, and enjoy your meal!</p>
+              </div>
+            }
+          </div>
+        </main>
+      </div>
+
+      <!-- Bottom Navigation Back Button -->
+      <div class="recipe-bottom-nav no-print">
+        <a routerLink="/recipes" class="btn btn-secondary btn-lg">
+          ← Back to All Recipes
+        </a>
+      </div>
+    </div>
+  }
+</div>

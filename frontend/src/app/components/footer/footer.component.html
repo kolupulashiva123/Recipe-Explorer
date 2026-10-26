@@ -1,0 +1,93 @@
+<footer class="footer-wrapper">
+  <div class="container footer-inner">
+    <!-- Brand column -->
+    <div class="footer-col brand-col">
+      <div class="brand-logo footer-logo">
+        <div class="logo-icon-wrap">
+          <span class="logo-emoji">🍳</span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Recipe Explorer</span>
+          <span class="brand-tagline">Discover • Cook • Enjoy</span>
+        </div>
+      </div>
+      <p class="footer-desc">
+        Your go-to culinary companion. Explore handcrafted recipes across cuisines, scale ingredient quantities with ease, and embark on delicious cooking adventures right in your kitchen.
+      </p>
+      <div class="tech-badges">
+        <span class="tech-pill">Angular 18</span>
+        <span class="tech-pill">TypeScript</span>
+        <span class="tech-pill">Node.js</span>
+        <span class="tech-pill">Express REST</span>
+      </div>
+    </div>
+
+    <!-- Quick Navigation -->
+    <div class="footer-col links-col">
+      <h4 class="footer-heading">Quick Navigation</h4>
+      <ul class="footer-links">
+        <li><a routerLink="/">Home Page</a></li>
+        <li><a routerLink="/recipes">All Recipes (30+)</a></li>
+        <li><a routerLink="/categories">Browse Categories</a></li>
+        <li><a routerLink="/favorites">Saved Favorites</a></li>
+        <li><a routerLink="/about">About This Project</a></li>
+      </ul>
+    </div>
+
+    <!-- Popular Cuisines -->
+    <div class="footer-col links-col">
+      <h4 class="footer-heading">Popular Cuisines</h4>
+      <ul class="footer-links">
+        <li><a routerLink="/recipes" [queryParams]="{ cuisine: 'Indian' }">Indian Curries & Breads</a></li>
+        <li><a routerLink="/recipes" [queryParams]="{ cuisine: 'Italian' }">Italian Pastas & Pizza</a></li>
+        <li><a routerLink="/recipes" [queryParams]="{ cuisine: 'Chinese' }">Wok Noodles & Fried Rice</a></li>
+        <li><a routerLink="/recipes" [queryParams]="{ cuisine: 'Mexican' }">Mexican Tacos & Salsas</a></li>
+        <li><a routerLink="/recipes" [queryParams]="{ dietary: 'Vegetarian' }">100% Vegetarian Dishes</a></li>
+      </ul>
+    </div>
+
+    <!-- Newsletter / Project info -->
+    <div class="footer-col newsletter-col">
+      <h4 class="footer-heading">Stay Inspired</h4>
+      <p class="newsletter-sub">Get fresh recipes and weekend cooking inspiration straight to your inbox.</p>
+      
+      @if (subscribed) {
+        <div class="newsletter-success animate-fade-in">
+          <span>✨ Thanks for subscribing! Happy cooking!</span>
+        </div>
+      } @else {
+        <form (ngSubmit)="onSubscribe()" class="newsletter-form">
+          <input
+            type="email"
+            name="newsletterEmail"
+            [(ngModel)]="newsletterEmail"
+            placeholder="Enter your email"
+            class="newsletter-input"
+            required
+          />
+          <button type="submit" class="btn btn-primary btn-sm">Join</button>
+        </form>
+      }
+
+      <div class="project-college-note">
+        <span class="badge badge-green">College Capstone Project</span>
+        <p>Built with ❤️ as a full-stack demo showcasing Angular & Node.js architecture.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div class="container footer-bottom-inner">
+      <p class="copyright-text">
+        © {{ currentYear }} Recipe Explorer. Designed for food enthusiasts everywhere.
+      </p>
+      <div class="bottom-links">
+        <span>No external database required</span>
+        <span>•</span>
+        <span>Zero paid APIs</span>
+        <span>•</span>
+        <span>100% Offline Data Storage</span>
+      </div>
+    </div>
+  </div>
+</footer>

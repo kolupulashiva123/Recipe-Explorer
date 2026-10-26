@@ -1,0 +1,54 @@
+<div class="favorites-page container animate-fade-in">
+  <div class="favorites-header">
+    <div class="favorites-title-wrap">
+      <span class="section-tag">Personal Cookery</span>
+      <h1 class="page-title">My Favorite Recipes</h1>
+      <p class="page-subtitle">
+        Your hand-picked culinary treasures, safely persisted on this device with zero login required.
+      </p>
+    </div>
+
+    @if (favoriteRecipes.length > 0) {
+      <div class="favorites-actions">
+        <button type="button" class="btn btn-secondary btn-sm" (click)="clearAll()">
+          🗑️ Clear All Favorites
+        </button>
+      </div>
+    }
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <p>Gathering your saved dishes...</p>
+    </div>
+  }
+
+  <!-- Empty Favorites State -->
+  @if (!isLoading && favoriteRecipes.length === 0) {
+    <div class="empty-fav-card animate-fade-in">
+      <div class="empty-heart-icon">❤️</div>
+      <h2>No Favorites Saved Yet</h2>
+      <p>
+        Browse our catalog of 30+ recipes and tap the heart icon on any dish to save it here for quick access while cooking.
+      </p>
+      <a routerLink="/recipes" class="btn btn-primary btn-lg">
+        Explore Recipes Now ➔
+      </a>
+    </div>
+  }
+
+  <!-- Populated Favorites Grid -->
+  @if (!isLoading && favoriteRecipes.length > 0) {
+    <div class="fav-count-meta">
+      <span>You have saved <strong>{{ favoriteRecipes.length }}</strong> favorite {{ favoriteRecipes.length === 1 ? 'recipe' : 'recipes' }}</span>
+    </div>
+
+    <div class="recipe-grid animate-fade-in">
+      @for (recipe of favoriteRecipes; track recipe.id) {
+        <app-recipe-card [recipe]="recipe"></app-recipe-card>
+      }
+    </div>
+  }
+</div>

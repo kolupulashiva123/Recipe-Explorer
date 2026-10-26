@@ -1,0 +1,125 @@
+<div class="about-page container animate-fade-in">
+  <!-- Hero Section -->
+  <div class="about-hero">
+    <span class="section-tag">About This Project</span>
+    <h1 class="page-title">Recipe Explorer</h1>
+    <p class="about-tagline">
+      Discover, Cook & Enjoy — A Full-Stack Modern Web Application built with Angular & Node.js
+    </p>
+
+    <div class="api-status-pill" [class.status-online]="backendStatus.includes('Online')">
+      <span class="status-dot"></span>
+      <span>Backend REST API Status: <strong>{{ backendStatus }}</strong></span>
+      @if (backendUptime) {
+        <span class="uptime-badge">(Uptime: {{ backendUptime }})</span>
+      }
+    </div>
+  </div>
+
+  <!-- Tech Stack Grid -->
+  <section class="about-section">
+    <div class="section-header">
+      <span class="section-tag">Architecture</span>
+      <h2 class="section-title">Mandatory Technology Stack</h2>
+      <p class="section-desc">Designed with separation of concerns between an Angular single-page frontend and a Node/Express REST backend.</p>
+    </div>
+
+    <div class="tech-grid">
+      <div class="tech-card">
+        <div class="tech-icon-circle">🅰️</div>
+        <h3>Angular 18 Frontend</h3>
+        <p>Built using modern standalone components, Angular Router with query parameter binding, reactive RxJS services, and HttpClient for asynchronous data streaming.</p>
+        <ul class="tech-features">
+          <li>Standalone Components</li>
+          <li>Typed Data Models</li>
+          <li>Interactive Serving Scaler</li>
+          <li>Dynamic Filters & Sorts</li>
+        </ul>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon-circle">🟢</div>
+        <h3>Node.js & Express REST API</h3>
+        <p>A decoupled Node.js and Express backend providing modular routes, controllers, request validation, and centralized error handling middleware.</p>
+        <ul class="tech-features">
+          <li>RESTful Endpoints</li>
+          <li>Param & Query Validation</li>
+          <li>CORS Pre-Configured</li>
+          <li>Health Check Monitoring</li>
+        </ul>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon-circle">📂</div>
+        <h3>Local JavaScript Data Storage</h3>
+        <p>All 30+ recipes and 12 categories are structured as clean, maintainable JavaScript modules (<code class="code-inline">recipes.js</code> and <code class="code-inline">categories.js</code>). Zero SQL or external database configuration needed.</p>
+        <ul class="tech-features">
+          <li>Zero External DBs (No Mongo/SQL)</li>
+          <li>Zero Paid API Keys Required</li>
+          <li>100% Offline Capability</li>
+          <li>Deterministic Sample Data</li>
+        </ul>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-icon-circle">💾</div>
+        <h3>Browser LocalStorage Persistence</h3>
+        <p>Saved favorites are persisted locally on the client using HTML5 Web Storage API, guaranteeing that saved meals remain safely available across browser refreshes with no sign-in required.</p>
+        <ul class="tech-features">
+          <li>No Authentication Barrier</li>
+          <li>Instant Reactive Updates</li>
+          <li>One-Click Clear & Toggle</li>
+          <li>Offline Accessible</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Highlights -->
+  <section class="about-section highlights-box">
+    <div class="section-header">
+      <span class="section-tag">Key Features</span>
+      <h2 class="section-title">What Makes Recipe Explorer Special?</h2>
+    </div>
+
+    <div class="highlights-grid">
+      <div class="highlight-item">
+        <span class="hl-icon">⚖️</span>
+        <div class="hl-body">
+          <h4>Dynamic Serving Size Adjustment</h4>
+          <p>Double, triple, or scale recipes down. Ingredient quantities recalculate proportionally in real-time so home cooks can shop and measure without doing mental arithmetic.</p>
+        </div>
+      </div>
+
+      <div class="highlight-item">
+        <span class="hl-icon">🔍</span>
+        <div class="hl-body">
+          <h4>Multi-Dimensional Search & Filtering</h4>
+          <p>Search recipes by name or ingredients, and narrow down dishes by cuisine, meal type (breakfast, lunch, dinner, dessert), dietary restrictions, and prep/cook duration.</p>
+        </div>
+      </div>
+
+      <div class="highlight-item">
+        <span class="hl-icon">🖨️</span>
+        <div class="hl-body">
+          <h4>Kitchen-Friendly Print Mode</h4>
+          <p>Dedicated print stylesheet strips away navigation, footers, and buttons, generating a crisp black-and-white recipe sheet ready for physical kitchen counters.</p>
+        </div>
+      </div>
+
+      <div class="highlight-item">
+        <span class="hl-icon">🎨</span>
+        <div class="hl-body">
+          <h4>Warm Culinary Aesthetic</h4>
+          <p>Warm orange, rich cream, fresh herb green, and crisp white typography with rounded cards, smooth micro-interactions, and mobile-first responsiveness.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="about-cta">
+    <a routerLink="/recipes" class="btn btn-primary btn-lg">Explore All Recipes ➔</a>
+    <a routerLink="/categories" class="btn btn-secondary btn-lg">Browse Categories</a>
+  </div>
+</div>

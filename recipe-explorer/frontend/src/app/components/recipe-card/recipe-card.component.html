@@ -1,0 +1,89 @@
+<article class="recipe-card">
+  <!-- Card Header & Media -->
+  <div class="card-media-wrapper">
+    <img
+      [src]="recipe.imageUrl"
+      [alt]="recipe.name"
+      class="card-img"
+      loading="lazy"
+    />
+    <div class="card-overlay-gradient"></div>
+
+    <!-- Cuisine & Category Badges -->
+    <div class="card-top-badges">
+      <span class="badge badge-orange">{{ recipe.cuisine }}</span>
+      <span class="badge" [ngClass]="getDietaryClass(recipe.dietary)">
+        {{ getDietaryIcon(recipe.dietary) }} {{ recipe.dietary }}
+      </span>
+    </div>
+
+    <!-- Favorite Heart Toggle -->
+    <button
+      type="button"
+      class="fav-toggle-btn"
+      [class.active]="isFavorite"
+      (click)="toggleFavorite($event)"
+      [attr.aria-label]="isFavorite ? 'Remove from favorites' : 'Add to favorites'"
+    >
+      <span class="heart-icon">{{ isFavorite ? '❤️' : '🤍' }}</span>
+    </button>
+  </div>
+
+  <!-- Card Body -->
+  <div class="card-body">
+    <!-- Meta row: Rating & Difficulty -->
+    <div class="card-meta-row">
+      <div class="star-rating">
+        <span class="star-icon">⭐</span>
+        <span class="rating-val">{{ recipe.rating }}</span>
+        <span class="reviews-count">({{ recipe.reviewCount }})</span>
+      </div>
+      <span class="badge" [ngClass]="getDifficultyClass(recipe.difficulty)">
+        {{ recipe.difficulty }}
+      </span>
+    </div>
+
+    <!-- Recipe Title -->
+    <h3 class="card-title">
+      <a [routerLink]="['/recipes', recipe.id]">{{ recipe.name }}</a>
+    </h3>
+
+    <!-- Description -->
+    <p class="card-desc">{{ recipe.description }}</p>
+
+    <!-- Time Details Row -->
+    <div class="card-times-bar">
+      <div class="time-item" title="Preparation Time">
+        <span class="time-icon">⏱️</span>
+        <div class="time-meta">
+          <span class="time-label">Prep</span>
+          <span class="time-val">{{ recipe.prepTime }}m</span>
+        </div>
+      </div>
+      <div class="time-divider"></div>
+      <div class="time-item" title="Cooking Time">
+        <span class="time-icon">🍳</span>
+        <div class="time-meta">
+          <span class="time-label">Cook</span>
+          <span class="time-val">{{ recipe.cookTime }}m</span>
+        </div>
+      </div>
+      <div class="time-divider"></div>
+      <div class="time-item" title="Total Time">
+        <span class="time-icon">⌛</span>
+        <div class="time-meta">
+          <span class="time-label">Total</span>
+          <span class="time-val font-bold">{{ recipe.totalTime }}m</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Footer -->
+  <div class="card-footer">
+    <a [routerLink]="['/recipes', recipe.id]" class="btn btn-primary btn-view-recipe">
+      <span>View Recipe</span>
+      <span class="arrow-icon">➔</span>
+    </a>
+  </div>
+</article>

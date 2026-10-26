@@ -1,0 +1,130 @@
+<div class="filters-container">
+  <!-- Top Bar: Sort By & Mobile Toggle -->
+  <div class="filters-header-bar">
+    <div class="active-summary">
+      <span class="filter-icon">⚙️</span>
+      <span class="filter-title">Filters & Preferences</span>
+      @if (activeFiltersCount > 0) {
+        <span class="badge badge-orange">{{ activeFiltersCount }} Active</span>
+      }
+    </div>
+
+    <div class="header-controls">
+      <!-- Sort Dropdown -->
+      <div class="sort-select-wrapper">
+        <label for="sortBySelect" class="sort-label">Sort By:</label>
+        <select
+          id="sortBySelect"
+          [(ngModel)]="filter.sortBy"
+          (change)="onSortChanged()"
+          class="sort-select"
+        >
+          @for (option of sortOptions; track option.value) {
+            <option [value]="option.value">{{ option.label }}</option>
+          }
+        </select>
+      </div>
+
+      <!-- Clear All Button -->
+      @if (activeFiltersCount > 0) {
+        <button type="button" (click)="onClearAll()" class="btn-clear-all" title="Reset all filters">
+          ✕ Clear All
+        </button>
+      }
+
+      <!-- Mobile Toggle -->
+      <button type="button" class="btn-toggle-filters-mobile" (click)="toggleMobileDrawer()">
+        <span>{{ isOpenMobile ? 'Hide Filters' : 'Show Filters' }}</span>
+        <span class="toggle-arrow">{{ isOpenMobile ? '▲' : '▼' }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Filter Sections (collapsible on mobile, always visible on desktop) -->
+  <div class="filters-body" [class.open-mobile]="isOpenMobile">
+    <!-- Cuisine Filter -->
+    <div class="filter-group">
+      <span class="filter-group-title">Cuisine</span>
+      <div class="chip-group">
+        @for (c of cuisines; track c) {
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="(filter.cuisine || 'all').toLowerCase() === c.toLowerCase()"
+            (click)="onSelectCuisine(c)"
+          >
+            {{ c }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Meal Type Filter -->
+    <div class="filter-group">
+      <span class="filter-group-title">Meal Type</span>
+      <div class="chip-group">
+        @for (m of mealTypes; track m) {
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="(filter.mealType || 'all').toLowerCase() === m.toLowerCase()"
+            (click)="onSelectMealType(m)"
+          >
+            {{ m }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Dietary Preference Filter -->
+    <div class="filter-group">
+      <span class="filter-group-title">Dietary</span>
+      <div class="chip-group">
+        @for (d of dietaryPreferences; track d) {
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="(filter.dietary || 'all').toLowerCase() === d.toLowerCase()"
+            (click)="onSelectDietary(d)"
+          >
+            {{ d }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Cooking Time Filter -->
+    <div class="filter-group">
+      <span class="filter-group-title">Max Time</span>
+      <div class="chip-group">
+        @for (t of timeOptions; track t.value) {
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="(filter.maxTime || 0) === t.value"
+            (click)="onSelectTime(t.value)"
+          >
+            {{ t.label }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Difficulty Level Filter -->
+    <div class="filter-group">
+      <span class="filter-group-title">Difficulty</span>
+      <div class="chip-group">
+        @for (diff of difficulties; track diff) {
+          <button
+            type="button"
+            class="filter-chip"
+            [class.active]="(filter.difficulty || 'all').toLowerCase() === diff.toLowerCase()"
+            (click)="onSelectDifficulty(diff)"
+          >
+            {{ diff }}
+          </button>
+        }
+      </div>
+    </div>
+  </div>
+</div>

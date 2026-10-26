@@ -1,0 +1,104 @@
+<div class="explore-page container">
+  <!-- Page Header -->
+  <div class="explore-header animate-fade-in">
+    <span class="section-tag">Culinary Catalog</span>
+    <h1 class="page-title">Explore Recipes</h1>
+    <p class="page-subtitle">
+      Find inspiring dishes tailored to your tastes, ingredients on hand, dietary goals, and schedule.
+    </p>
+
+    <!-- Search Bar in Explore -->
+    <div class="search-wrap">
+      <app-search-bar
+        [initialQuery]="currentFilter.q || ''"
+        (searchSubmitted)="onSearch($event)"
+        [showQuickTags]="true"
+      ></app-search-bar>
+    </div>
+  </div>
+
+  <!-- Filter Controls Component -->
+  <app-recipe-filters
+    [filter]="currentFilter"
+    (filterChange)="onFilterChange($event)"
+    (clearFilters)="onClearAll()"
+  ></app-recipe-filters>
+
+  <!-- Active Filter Badges Bar -->
+  @if (activeFilterKeys.length > 0) {
+    <div class="active-chips-bar animate-fade-in">
+      <span class="active-chips-label">Applied Filters:</span>
+      <div class="active-chips-list">
+        @for (item of activeFilterKeys; track item.key) {
+          <span class="active-chip">
+            <strong>{{ item.label }}:</strong> {{ item.value }}
+            <button
+              type="button"
+              class="chip-remove-btn"
+              (click)="removeSingleFilter(item.key)"
+              [attr.aria-label]="'Remove ' + item.label + ' filter'"
+            >
+              ✕
+            </button>
+          </span>
+        }
+        <button type="button" class="btn-clear-inline" (click)="onClearAll()">
+          Reset All
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Results Count Bar -->
+  <div class="results-count-bar">
+    <div class="count-info">
+      @if (!isLoading) {
+        <span>Found <strong>{{ allRecipes.length }}</strong> delicious recipes</span>
+      } @else {
+        <span>Searching recipe archives...</span>
+      }
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (isLoading) {
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <p>Simmering search results...</p>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!isLoading && allRecipes.length === 0) {
+    <div class="empty-state animate-fade-in">
+      <div class="empty-icon-wrap">
+        <span class="empty-emoji">🍳</span>
+      </div>
+      <h3 class="empty-title">No Recipes Found</h3>
+      <p class="empty-desc">
+        We couldn't find any recipes matching your current filters or search terms. Try searching for broader ingredients like "Chicken", "Paneer", "Rice", or clear active filters.
+      </p>
+      <button type="button" class="btn btn-primary" (click)="onClearAll()">
+        Reset All Filters
+      </button>
+    </div>
+  }
+
+  <!-- Recipe Grid -->
+  @if (!isLoading && allRecipes.length > 0) {
+    <div class="recipe-grid animate-fade-in">
+      @for (recipe of displayedRecipes; track recipe.id) {
+        <app-recipe-card [recipe]="recipe"></app-recipe-card>
+      }
+    </div>
+
+    <!-- Load More Pagination Button -->
+    @if (displayedRecipes.length < allRecipes.length) {
+      <div class="load-more-wrap">
+        <button type="button" class="btn btn-outline-primary btn-lg" (click)="loadMore()">
+          Load More Recipes ({{ allRecipes.length - displayedRecipes.length }} remaining) ➔
+        </button>
+      </div>
+    }
+  }
+</div>

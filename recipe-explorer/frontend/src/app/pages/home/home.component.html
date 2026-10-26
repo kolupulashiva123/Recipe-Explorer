@@ -1,0 +1,190 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-bg-overlay"></div>
+  <div class="container hero-content animate-fade-in">
+    <div class="hero-badge">
+      <span class="badge-icon">✨</span>
+      <span>Handcrafted Culinary Inspiration</span>
+    </div>
+    <h1 class="hero-title">
+      Discover Your Next <span class="text-highlight">Favorite Recipe</span>
+    </h1>
+    <p class="hero-desc">
+      Explore 30+ delightful dishes across Indian, Italian, Chinese, and Mexican cuisines.
+      Calculate proportional ingredients, follow step-by-step cooking instructions, and cook meals you'll love.
+    </p>
+
+    <!-- Prominent Hero Search Bar -->
+    <div class="hero-search-box">
+      <app-search-bar [navigateOnSearch]="true" [showQuickTags]="true"></app-search-bar>
+    </div>
+
+    <!-- Hero CTA Buttons -->
+    <div class="hero-actions">
+      <a routerLink="/recipes" class="btn btn-primary btn-lg">
+        <span>🍽️ Explore Recipes</span>
+      </a>
+      <a routerLink="/categories" class="btn btn-secondary btn-lg">
+        <span>🏷️ Browse Categories</span>
+      </a>
+    </div>
+
+    <!-- Quick Highlights Ribbon -->
+    <div class="hero-stats-ribbon">
+      <div class="stat-item">
+        <span class="stat-number">30+</span>
+        <span class="stat-label">Handcrafted Recipes</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number">12</span>
+        <span class="stat-label">Curated Cuisines & Meals</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Dynamic Serving Scaling</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-number">Free</span>
+        <span class="stat-label">Zero Account Required</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Recipes Section -->
+<section class="home-section container">
+  <div class="section-header">
+    <span class="section-tag">Chef's Choice</span>
+    <h2 class="section-title">Featured Recipes</h2>
+    <p class="section-desc">Hand-picked showstoppers bursting with flavor, loved by home chefs worldwide.</p>
+  </div>
+
+  @if (isLoading) {
+    <div class="spinner-container">
+      <div class="spinner"></div>
+      <p>Loading delectable recipes...</p>
+    </div>
+  } @else {
+    <div class="recipe-grid">
+      @for (recipe of featuredRecipes; track recipe.id) {
+        <app-recipe-card [recipe]="recipe"></app-recipe-card>
+      }
+    </div>
+    <div class="section-cta-wrap">
+      <a routerLink="/recipes" class="btn btn-outline-primary btn-lg">
+        View All 30 Recipes ➔
+      </a>
+    </div>
+  }
+</section>
+
+<!-- Popular Categories Section -->
+<section class="categories-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Explore By Taste</span>
+      <h2 class="section-title">Popular Categories</h2>
+      <p class="section-desc">From sizzling street food to indulgent desserts and wholesome breakfasts.</p>
+    </div>
+
+    <div class="categories-grid">
+      @for (cat of popularCategories; track cat.id) {
+        <a
+          [routerLink]="['/recipes']"
+          [queryParams]="cat.type === 'cuisine' ? { cuisine: cat.filterValue } : (cat.type === 'meal' ? { mealType: cat.filterValue } : { category: cat.filterValue })"
+          class="category-card"
+        >
+          <div class="category-img-wrap">
+            <img [src]="cat.image" [alt]="cat.name" class="category-img" loading="lazy" />
+            <div class="category-overlay"></div>
+          </div>
+          <div class="category-info">
+            <span class="category-icon">{{ cat.icon }}</span>
+            <h3 class="category-name">{{ cat.name }}</h3>
+            <span class="category-count">{{ cat.recipeCount || 3 }} Recipes</span>
+          </div>
+        </a>
+      }
+    </div>
+
+    <div class="section-cta-wrap">
+      <a routerLink="/categories" class="btn btn-secondary btn-lg">
+        Explore All 12 Categories ➔
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Trending This Week Section -->
+<section class="home-section container">
+  <div class="section-header">
+    <span class="section-tag">Hot & Delicious</span>
+    <h2 class="section-title">Trending This Week</h2>
+    <p class="section-desc">The most saved and cooked recipes making waves in kitchens this week.</p>
+  </div>
+
+  @if (isLoading) {
+    <div class="spinner-container">
+      <div class="spinner"></div>
+    </div>
+  } @else {
+    <div class="recipe-grid">
+      @for (recipe of trendingRecipes; track recipe.id) {
+        <app-recipe-card [recipe]="recipe"></app-recipe-card>
+      }
+    </div>
+  }
+</section>
+
+<!-- Feature Spotlight / Why Us -->
+<section class="features-spotlight container">
+  <div class="spotlight-card">
+    <div class="spotlight-content">
+      <span class="section-tag">Smart Kitchen Assistant</span>
+      <h2 class="spotlight-title">Cooking Made Effortless & Joyful</h2>
+      <p class="spotlight-desc">
+        Never struggle with scaling recipe proportions again. Our smart interactive serving calculator adjusts exact ingredient grams, cups, and teaspoons with a single click.
+      </p>
+      <div class="features-list">
+        <div class="feature-item">
+          <span class="feat-icon">⚖️</span>
+          <div>
+            <strong>Serving Scaler:</strong> Double or halve ingredients automatically.
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feat-icon">📋</span>
+          <div>
+            <strong>Interactive Checklist:</strong> Mark cooking steps as you complete them.
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feat-icon">🖨️</span>
+          <div>
+            <strong>Print Ready:</strong> One-click print-optimized recipe cards with zero clutter.
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feat-icon">💾</span>
+          <div>
+            <strong>Offline Favorites:</strong> Saved right to your browser with no account needed.
+          </div>
+        </div>
+      </div>
+      <div class="spotlight-action">
+        <a routerLink="/recipes" class="btn btn-primary btn-lg">Start Cooking Today</a>
+      </div>
+    </div>
+    <div class="spotlight-image-wrap">
+      <img
+        src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1000&q=80"
+        alt="Fresh ingredients and cooking"
+        class="spotlight-img"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</section>
